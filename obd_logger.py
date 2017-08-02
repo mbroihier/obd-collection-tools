@@ -59,16 +59,12 @@ class ObdTools:
                 for i in connection.supported_commands:  # log all supported data
                     try:
                         result = connection.query(i)
-                        #if result.command == obd.commands['STATUS']:
-                        #    line += " " + str(result.value.MIL)
-                        #    line += " " + str(result.value.DTC_count)
-                        #else:
                         if str(result) != "None":
                             line += ", " + str(result)
                             if header == '':
-                                header = "Time, " + str(result.command)
+                                header = "Time, " + result.command.desc
                             else:
-                                header += ", " + str(result.command)
+                                header += ", " + result.command.desc
                     except (ValueError, TypeError, NameError) as error_information:
                         print("Exception caught, continuing: {}".format(error_information))
                 time_stamp = math.floor(time.time())
