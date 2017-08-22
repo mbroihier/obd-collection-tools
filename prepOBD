@@ -1,0 +1,4 @@
+sudo bluetoothctl <<EOF
+power on
+EOF
+sudo rfcomm bind /dev/rfcomm0 00:1D:A5:00:14:30
