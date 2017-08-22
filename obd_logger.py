@@ -101,8 +101,13 @@ class ObdTools:
                         if str(result) != "None":
                             line += ", " + str(result)
                             header = self._build_header(header, result.command.desc)
+                        else: # prune out commands that are failing
+                            if self.first_line:
+                                print("removing {} because response was None".format(i))
+                                supported_commands.remove(i)
                     except (ValueError, TypeError, NameError) as error_information:
-                        print("Exception caught, continuing: {}".format(error_information))
+                        print("Exception {} caught, continuing: {}".format(type(error_information),
+                                                                           error_information))
                         supported_commands.remove(i) # prune out commands that are failing
                 updated_commands = set(supported_commands)
                 self._log_entry(header, self.first_line)
