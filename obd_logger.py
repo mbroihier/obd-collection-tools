@@ -55,11 +55,10 @@ class ObdTools:
         Updates header with new title
         '''
         return_header = header
-        if self.first_line:
-            if return_header == '':
-                return_header = "Time, " + command
-            else:
-                return_header += ", " + command
+        if return_header == '':
+            return_header = "Time, " + command
+        else:
+            return_header += ", " + command
         return return_header
 
     def _log_entry(self, line, first_time):
@@ -95,6 +94,7 @@ class ObdTools:
             while True:
                 line = ''
                 header = ''
+                refresh = False
                 for i in updated_commands:  # log all supported data
                     try:
                         result = self.connection.query(i)
@@ -109,8 +109,9 @@ class ObdTools:
                         print("Exception {} caught, continuing: {}".format(type(error_information),
                                                                            error_information))
                         supported_commands.remove(i) # prune out commands that are failing
+                        refresh = True
                 updated_commands = set(supported_commands)
-                self._log_entry(header, self.first_line)
+                self._log_entry(header, self.first_line or refresh)
                 self._log_entry(line, self.first_line)
                 print("*****" + line)
         except KeyboardInterrupt:
