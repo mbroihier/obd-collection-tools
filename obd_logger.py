@@ -50,25 +50,22 @@ class ObdTools:
         self.connection.print_commands()  # all supported commands
         self.log_file = open("./log." + str(self.log_count), "w")
 
-    def _build_header(self, header, command):
+    def _build_header(self, commands):
         '''
-        Updates header with new title
+        Create header with currently active commands
         '''
-        return_header = header
-        if return_header == '':
-            return_header = "Time, " + command
-        else:
+        return_header = "Time"
+        for command in commands:
             return_header += ", " + command
         return return_header
 
-    def _log_entry(self, line, first_time):
+    def _log_entry(self, line, first_time, header):
         if first_time:
-            self.log_file.write(line + "\n")
+            self.log_file.write(header + "\n")
             self.first_line = False
-        else:
-            if line != '':
-                time_stamp = math.floor(time.time())
-                self.log_file.write(str(time_stamp) + line + "\n")
+        if line != '':
+            time_stamp = math.floor(time.time())
+            self.log_file.write(str(time_stamp) + line + "\n")
 
     def _terminate(self):
         '''
@@ -99,7 +96,6 @@ class ObdTools:
                         result = self.connection.query(i)
                         if str(result) != "None":
                             line += ", " + str(result)
-                            header = self._build_header(header, result.command.desc)
                         else: # prune out commands that are failing
                             if self.first_line:
                                 print("removing {} because response was None".format(i))
@@ -110,8 +106,8 @@ class ObdTools:
                         supported_commands.remove(i) # prune out commands that are failing
                         self.first_line = True # reprint header
                 updated_commands = set(supported_commands)
-                self._log_entry(header, self.first_line)
-                self._log_entry(line, self.first_line)
+                header = self._build_header(updated_commands)
+                self._log_entry(line, self.first_line, header)
                 print("*****" + line)
         except KeyboardInterrupt:
             self._terminate()
