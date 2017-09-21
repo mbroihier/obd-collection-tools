@@ -56,7 +56,7 @@ class ObdTools:
         '''
         return_header = "Time"
         for command in commands:
-            return_header += ", " + command
+            return_header += ", " + command.desc
         return return_header
 
     def _log_entry(self, line, first_time, header):
