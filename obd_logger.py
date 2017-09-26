@@ -56,16 +56,17 @@ class ObdTools:
         '''
         return_header = "Time"
         for command in commands:
-            return_header += ", " + command.desc
+            return_header += "| " + command.desc
         return return_header
 
     def _log_entry(self, line, first_time, header):
-        if first_time:
+        if first_time: # write only header - suppress line
             self.log_file.write(header + "\n")
             self.first_line = False
-        if line != '':
-            time_stamp = math.floor(time.time())
-            self.log_file.write(str(time_stamp) + line + "\n")
+        else: # write line
+            if line != '':
+                time_stamp = math.floor(time.time())
+                self.log_file.write(str(time_stamp) + line + "\n")
 
     def _terminate(self):
         '''
