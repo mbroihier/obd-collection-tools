@@ -96,7 +96,7 @@ class ObdTools:
                     try:
                         result = self.connection.query(i)
                         if str(result) != "None":
-                            line += ", " + str(result)
+                            line += "| " + str(result)
                         else: # prune out commands that are failing
                             if self.first_line:
                                 print("removing {} because response was None".format(i))
