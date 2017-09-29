@@ -101,10 +101,14 @@ class ObdTools:
                             if self.first_line:
                                 print("removing {} because response was None".format(i))
                                 supported_commands.remove(i)
+                                if supported_commands == updated_commands:
+                                    print("!!supported_command should no longer match updated_commands")
                     except (ValueError, TypeError, NameError) as error_information:
                         print("Exception {} caught, continuing: {}".format(type(error_information),
                                                                            error_information))
                         supported_commands.remove(i) # prune out commands that are failing
+                        if supported_commands == updated_commands:
+                            print("!!supported_command should no longer match updated_commands")
                         self.first_line = True # reprint header
                 updated_commands = set(supported_commands)
                 header = self._build_header(updated_commands)
