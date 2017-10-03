@@ -1,0 +1,15 @@
+{
+  "name": "obd",
+  "version": "1.0.0",
+  "description": "OBD tools",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Broihier",
+  "license": "MIT",
+  "dependencies": {
+    "flot-latest": "^0.8.4",
+    "jquery": "^3.2.1"
+  }
+}

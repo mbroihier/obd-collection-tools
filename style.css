@@ -1,0 +1,20 @@
+body {
+    font-family: verdana;
+}
+
+body input,
+body label {
+    display: block;
+}
+
+#ownAxis input {
+    float: left;
+}
+
+#removedLines input {
+    float: left;
+}
+
+#removedLines {
+    display: none;
+}

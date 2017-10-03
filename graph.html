@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+            <meta charset="UTF-8" >
+            <title>OBD Log</title>
+            <link href="style.css" rel="stylesheet"/>
+            <script src ="node_modules/flot-latest/jquery.js"></script>
+            <script src ="node_modules/flot-latest/jquery.flot.js"></script>
+            <script src ="node_modules/flot-latest/jquery.flot.time.js"></script>
+            <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src ="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.min.js"></script>
+            <script src ="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
+            <script src="script.js"></script>
+	</head>
+	<body>
+	    <div id="legend" style="width:250px;height:250px;padding:30px">
+	    </div>
+            <div style="text-align: center; margin-left: auto; margin-right: auto">
+                <h2>OBD II Measurements</h2>
+	        <div id="placeholder" style="width:1000px;height:500px;margin-left:auto;margin-right:auto">
+	        </div>
+                <h2>Date and Time (UTC)</h2>
+            </div>
+            <div id="ownAxis">
+                <h4>Move to it's own axis</h4>
+            </div>
+            <div id="removedLines">
+                <h4>Removed lines, select to undo</h4>
+            </div>
+    	</body>
+</html>
