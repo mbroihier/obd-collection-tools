@@ -8,6 +8,7 @@ import time
 import math
 import os
 import re
+import sys
 import obd
 
 
@@ -43,11 +44,16 @@ class ObdTools:
             ports = obd.scan_serial()
             if ports:
                 no_ports = False
+                self.connection = obd.OBD()
+                self.connection.print_commands()  # all supported commands
+                if len(self.connection.supported_commands) == 0:
+                    print("Error - OBD interface claims there are no supported commands")
+                    self.connection.close()
+                    no_ports = True
+                    time.sleep(5.0) # try again
             else:
                 print("no ports yet, waiting ...")
                 time.sleep(5.0)
-        self.connection = obd.OBD()
-        self.connection.print_commands()  # all supported commands
         self.log_file = open("./log." + str(self.log_count), "w")
 
     def _build_header(self, commands):
@@ -92,6 +98,10 @@ class ObdTools:
             while True:
                 line = ''
                 header = ''
+                if len(updated_commands) == 0:
+                    print("Error - due to errors in transmission, there are no commands left to process")
+                    self._terminate()
+                    sys.exit(-1)
                 for i in updated_commands:  # log all supported data
                     try:
                         result = self.connection.query(i)
