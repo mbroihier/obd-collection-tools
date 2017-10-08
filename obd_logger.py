@@ -45,6 +45,15 @@ class ObdTools:
             if ports:
                 no_ports = False
                 self.connection = obd.OBD()
+                keep_commands = set(self.connection.supported_commands)
+                for i in self.connection.supported_commands:
+                    try:
+                        if i.mode != 1: # keep only mode 1 commands
+                            keep_commands.remove(i)
+                    except ValueError as error:
+                        print("while pruning supported command list, got: {}".format(error))
+                        keep_commands.remove(i)
+                self.connection.supported_commands = set(keep_commands)
                 self.connection.print_commands()  # all supported commands
                 if len(self.connection.supported_commands) == 0:
                     print("Error - OBD interface claims there are no supported commands")
@@ -99,7 +108,7 @@ class ObdTools:
                 line = ''
                 header = ''
                 if len(updated_commands) == 0:
-                    print("Error - due to errors in transmission, there are no commands left to process")
+                    print("Error - due to errors in transmission, there are no valid OBD commands")
                     self._terminate()
                     sys.exit(-1)
                 for i in updated_commands:  # log all supported data
@@ -112,7 +121,7 @@ class ObdTools:
                                 print("removing {} because response was None".format(i))
                                 supported_commands.remove(i)
                                 if supported_commands == updated_commands:
-                                    print("!!supported_command should no longer match updated_commands")
+                                    print("!!supported/updated_commands should no longer match")
                     except (ValueError, TypeError, NameError) as error_information:
                         print("Exception {} caught, continuing: {}".format(type(error_information),
                                                                            error_information))
