@@ -8,7 +8,7 @@ To run:
 python3 obd_logger.py
 
 ```
-This will connect to an OBD device, discover what PIDs are available in the vehicle, and contineously poll the vehicle and output the collected values to a file called log.n (where n is advanced automatically by the utility).
+This will connect to an OBD device, discover what PIDs are available in the vehicle, and continuously poll the vehicle and output the collected values to a file called log.n (where n is advanced automatically by the utility).  Control C or kill -2 can be used to cleanly terminate the utility.
 
 ```
 
