@@ -94,7 +94,7 @@ class ObdLogToJson:
         json_string += "};"
         json_string += "var collectedData = JSON.parse('"
         json_string += json.dumps(self.obd_object)
-        json_string += "');"
+        json_string += "', reviver);"
         self.output_handle.write(json_string)
         self.output_handle.close()
 
