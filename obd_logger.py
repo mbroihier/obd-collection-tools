@@ -44,22 +44,27 @@ class ObdTools:
             ports = obd.scan_serial()
             if ports:
                 no_ports = False
-                self.connection = obd.OBD()
-                keep_commands = set(self.connection.supported_commands)
-                for i in self.connection.supported_commands:
-                    try:
-                        if i.mode != 1: # keep only mode 1 commands
+                try:
+                    self.connection = obd.OBD()
+                    keep_commands = set(self.connection.supported_commands)
+                    for i in self.connection.supported_commands:
+                        try:
+                            if i.mode != 1: # keep only mode 1 commands
+                                keep_commands.remove(i)
+                                print("Removing command list index {}".format(i))
+                        except ValueError as error:
+                            print("while pruning supported command list, got: {}".format(error))
                             keep_commands.remove(i)
-                    except ValueError as error:
-                        print("while pruning supported command list, got: {}".format(error))
-                        keep_commands.remove(i)
-                self.connection.supported_commands = set(keep_commands)
-                self.connection.print_commands()  # all supported commands
-                if len(self.connection.supported_commands) == 0:
-                    print("Error - OBD interface claims there are no supported commands")
-                    self.connection.close()
-                    no_ports = True
-                    time.sleep(5.0) # try again
+                    self.connection.supported_commands = set(keep_commands)
+                    self.connection.print_commands()  # all supported commands
+                    if len(self.connection.supported_commands) == 0:
+                        print("Error - OBD interface claims there are no supported commands")
+                        self.connection.close()
+                        no_ports = True
+                        time.sleep(5.0) # try again
+                except obd.utils.serial.SerialException:
+                    print("Error - serial connection received nothing")
+                    sys.exit(-1)
             else:
                 print("no ports yet, waiting ...")
                 time.sleep(5.0)
